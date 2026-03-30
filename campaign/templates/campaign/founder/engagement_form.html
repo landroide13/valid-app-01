@@ -1,0 +1,43 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}Update Engagement{% endblock %}
+
+{% block content %}
+<h1>Update Engagement</h1>
+
+<div class="card">
+    <p><strong>Campaign:</strong> {{ intro_request.campaign.title }}</p>
+    <p><strong>SME:</strong> {{ intro_request.sme_user.profile.company_name }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div style="color: red;">{{ field.errors }}</div>
+            {% endif %}
+        {% endfor %}
+
+        <br>
+        <button class="btn" type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

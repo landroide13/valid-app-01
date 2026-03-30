@@ -1,0 +1,54 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}{{ campaign.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ campaign.title }}</h1>
+
+    <p><strong>Founder:</strong> {{ campaign.founder.get_full_name|default:campaign.founder.username }}</p>
+    <p><strong>Company:</strong> {{ campaign.founder.profile.company_name }}</p>
+    <p><strong>Industry:</strong> {{ campaign.target_industry }}</p>
+    <p><strong>Target role:</strong> {{ campaign.target_role }}</p>
+    <p><strong>Company size:</strong> {{ campaign.target_company_size }}</p>
+    <p><strong>Target market:</strong> {{ campaign.target_market }}</p>
+    <p><strong>Validation goal:</strong> {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})</p>
+    <p><strong>Pilot offer:</strong> {{ campaign.pilot_offer_summary|default:"Not specified" }}</p>
+
+    <hr>
+
+    <h3>Problem</h3>
+    <p>{{ campaign.problem_summary }}</p>
+
+    <h3>Solution</h3>
+    <p>{{ campaign.solution_summary }}</p>
+
+    {% if can_request_intro %}
+        <hr>
+        {% if existing_intro_request %}
+            <p><strong>Your intro request status:</strong> {{ existing_intro_request.status }}</p>
+        {% else %}
+            <a class="btn" href="{% url 'sme_request_intro' campaign.id %}">Request Intro</a>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

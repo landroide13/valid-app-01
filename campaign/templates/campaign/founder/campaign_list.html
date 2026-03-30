@@ -1,0 +1,33 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}My Campaigns{% endblock %}
+
+{% block content %}
+<h1>My Campaigns</h1>
+
+{% for campaign in campaigns %}
+    <div class="card">
+        <h3>{{ campaign.title }}</h3>
+        <p><strong>Status:</strong> {{ campaign.status }}</p>
+        <p><strong>Intro requests:</strong> {{ campaign.intro_requests_count }}</p>
+        <a class="btn" href="{% url 'founder_campaign_update' campaign.id %}">Edit</a>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>You have not created any campaigns yet.</p>
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

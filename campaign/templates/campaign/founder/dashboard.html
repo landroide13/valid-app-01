@@ -1,0 +1,71 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}Founder Dashboard{% endblock %}
+
+{% block content %}
+<h1>Founder Dashboard</h1>
+
+<div class="grid grid-2">
+    <div class="card">
+        <h3>Total Campaigns</h3>
+        <p>{{ total_campaigns }}</p>
+    </div>
+    <div class="card">
+        <h3>Live Campaigns</h3>
+        <p>{{ live_campaigns }}</p>
+    </div>
+    <div class="card">
+        <h3>Pending Review</h3>
+        <p>{{ pending_campaigns }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Intro Requests</h3>
+        <p>{{ total_intro_requests }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <a class="btn" href="{% url 'founder_campaign_create' %}">Create Campaign</a>
+    <a class="btn btn-secondary" href="{% url 'founder_campaign_list' %}">My Campaigns</a>
+    <a class="btn btn-secondary" href="{% url 'founder_intro_request_list' %}">Intro Requests</a>
+</div>
+
+<h2>Recent Campaigns</h2>
+{% for campaign in recent_campaigns %}
+    <div class="card">
+        <h3>{{ campaign.title }}</h3>
+        <p><strong>Status:</strong> {{ campaign.status }}</p>
+        <p><strong>Intro requests:</strong> {{ campaign.intro_requests_count }}</p>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>No campaigns yet.</p>
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

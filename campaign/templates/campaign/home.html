@@ -1,0 +1,49 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}Valid - Home{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Validate your B2B SaaS with real SMEs</h1>
+    <p>Valid helps founders launch structured validation campaigns and connect with relevant SME operators.</p>
+    <a class="btn" href="{% url 'campaign_list' %}">Browse Live Campaigns</a>
+</div>
+
+<h2>Featured Campaigns</h2>
+{% for campaign in campaigns %}
+    <div class="card">
+        <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>
+        <p>{{ campaign.solution_summary|truncatechars:150 }}</p>
+        <p><strong>Industry:</strong> {{ campaign.target_industry }}</p>
+        <p><strong>Target role:</strong> {{ campaign.target_role }}</p>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>No live campaigns yet.</p>
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

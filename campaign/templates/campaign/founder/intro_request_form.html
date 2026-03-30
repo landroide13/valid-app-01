@@ -1,0 +1,38 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}Intro Requests{% endblock %}
+
+{% block content %}
+<h1>Intro Requests</h1>
+
+{% for intro_request in intro_requests %}
+    <div class="card">
+        <h3>{{ intro_request.campaign.title }}</h3>
+        <p><strong>SME:</strong> {{ intro_request.sme_user.get_full_name|default:intro_request.sme_user.username }}</p>
+        <p><strong>Company:</strong> {{ intro_request.sme_user.profile.company_name }}</p>
+        <p><strong>Status:</strong> {{ intro_request.status }}</p>
+        <p><strong>Requested at:</strong> {{ intro_request.requested_at }}</p>
+
+        {% if intro_request.status == "requested" %}
+            <a class="btn" href="{% url 'founder_intro_request_update' intro_request.id 'accepted' %}">Accept</a>
+            <a class="btn btn-danger" href="{% url 'founder_intro_request_update' intro_request.id 'rejected' %}">Reject</a>
+        {% elif intro_request.status == "accepted" %}
+            <a class="btn btn-secondary" href="{% url 'founder_engagement_update' intro_request.id %}">Update Engagement</a>
+        {% endif %}
+    </div>
+{% empty %}
+    <div class="card">
+        <p>No intro requests yet.</p>
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

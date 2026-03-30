@@ -1,0 +1,50 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}SME Dashboard{% endblock %}
+
+{% block content %}
+<h1>SME Dashboard</h1>
+
+<h2>My Intro Requests</h2>
+{% for intro_request in my_intro_requests %}
+    <div class="card">
+        <h3>{{ intro_request.campaign.title }}</h3>
+        <p><strong>Status:</strong> {{ intro_request.status }}</p>
+        <p><strong>Founder:</strong> {{ intro_request.campaign.founder.get_full_name|default:intro_request.campaign.founder.username }}</p>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>You have not requested any intros yet.</p>
+    </div>
+{% endfor %}
+
+<h2>Recommended Campaigns</h2>
+{% for campaign in recommended_campaigns %}
+    <div class="card">
+        <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>
+        <p>{{ campaign.solution_summary|truncatechars:140 }}</p>
+        <a class="btn" href="{% url 'campaign_detail' campaign.id %}">View Campaign</a>
+    </div>
+{% empty %}
+    <div class="card">
+        <p>No recommendations yet.</p>
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
