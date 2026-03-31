@@ -3,41 +3,43 @@
 {% block title %}Campaigns{% endblock %}
 
 {% block content %}
-<h1>Live Campaigns</h1>
+<div class="container">
+    <h1>Live Campaigns</h1>
 
-<form method="get" class="card">
-    <div class="grid grid-2">
-        <div>
-            <label for="industry">Industry</label>
-            <input id="industry" type="text" name="industry" value="{{ request.GET.industry }}">
+    <form method="get" class="card">
+        <div class="grid grid-2">
+            <div>
+                <label for="industry">Industry</label>
+                <input id="industry" type="text" name="industry" value="{{ request.GET.industry }}">
+            </div>
+            <div>
+                <label for="role">Role</label>
+                <input id="role" type="text" name="role" value="{{ request.GET.role }}">
+            </div>
+            <div>
+                <label for="market">Market</label>
+                <input id="market" type="text" name="market" value="{{ request.GET.market }}">
+            </div>
         </div>
-        <div>
-            <label for="role">Role</label>
-            <input id="role" type="text" name="role" value="{{ request.GET.role }}">
+        <br>
+        <button class="btn" type="submit">Filter</button>
+    </form>
+    
+    {% for campaign in campaigns %}
+        <div class="card">
+            <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>
+            <p>{{ campaign.solution_summary|truncatechars:140 }}</p>
+            <p><strong>Industry:</strong> {{ campaign.target_industry }}</p>
+            <p><strong>Target role:</strong> {{ campaign.target_role }}</p>
+            <p><strong>Target market:</strong> {{ campaign.target_market }}</p>
+            <p><strong>Validation goal:</strong> {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})</p>
         </div>
-        <div>
-            <label for="market">Market</label>
-            <input id="market" type="text" name="market" value="{{ request.GET.market }}">
+    {% empty %}
+        <div class="card">
+            <p>No campaigns found.</p>
         </div>
-    </div>
-    <br>
-    <button class="btn" type="submit">Filter</button>
-</form>
- 
-{% for campaign in campaigns %}
-    <div class="card">
-        <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>
-        <p>{{ campaign.solution_summary|truncatechars:140 }}</p>
-        <p><strong>Industry:</strong> {{ campaign.target_industry }}</p>
-        <p><strong>Target role:</strong> {{ campaign.target_role }}</p>
-        <p><strong>Target market:</strong> {{ campaign.target_market }}</p>
-        <p><strong>Validation goal:</strong> {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})</p>
-    </div>
-{% empty %}
-    <div class="card">
-        <p>No campaigns found.</p>
-    </div>
-{% endfor %}
+    {% endfor %}
+</div>
 {% endblock %}
 
 

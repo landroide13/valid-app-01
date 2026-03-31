@@ -3,22 +3,63 @@
 {% block title %}My Campaigns{% endblock %}
 
 {% block content %}
-<h1>My Campaigns</h1>
+<div class="container page-shell">
+    <div class="page-header">
+        <h1>My Campaigns</h1>
+        <p>Manage your validation campaigns and keep them up to date.</p>
+    </div>
 
-{% for campaign in campaigns %}
-    <div class="card">
-        <h3>{{ campaign.title }}</h3>
-        <p><strong>Status:</strong> {{ campaign.status }}</p>
-        <p><strong>Intro requests:</strong> {{ campaign.intro_requests_count }}</p>
-        <a class="btn" href="{% url 'founder_campaign_update' campaign.id %}">Edit</a>
+    <div class="section-card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h2 class="h5 mb-1">Campaign List</h2>
+                    <p class="text-muted mb-0">All campaigns created under your account</p>
+                </div>
+
+                <a class="btn btn-primary-action" href="{% url 'founder_campaign_create' %}">
+                    + Create Campaign
+                </a>
+            </div>
+
+            <div class="content-stack">
+                {% for campaign in campaigns %}
+                    <div class="list-item-card">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                            <div>
+                                <h3 class="h6 mb-1">{{ campaign.title }}</h3>
+                                <p class="text-muted mb-2">
+                                    {{ campaign.solution_summary|truncatechars:130 }}
+                                </p>
+                                <div class="list-meta">
+                                    Status:
+                                    <strong>{{ campaign.status }}</strong>
+                                    &nbsp;·&nbsp;
+                                    Intro requests:
+                                    <strong>{{ campaign.intro_requests_count }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a class="btn btn-sm btn-outline-primary" href="{% url 'founder_campaign_update' campaign.id %}">
+                                    Edit
+                                </a>
+                                <a class="btn btn-sm btn-outline-secondary" href="{% url 'campaign_detail' campaign.id %}">
+                                    Preview
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        You have not created any campaigns yet.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-{% empty %}
-    <div class="card">
-        <p>You have not created any campaigns yet.</p>
-    </div>
-{% endfor %}
+</div>
 {% endblock %}
-
 
 
 

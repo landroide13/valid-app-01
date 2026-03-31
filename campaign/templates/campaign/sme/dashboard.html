@@ -3,33 +3,105 @@
 {% block title %}SME Dashboard{% endblock %}
 
 {% block content %}
-<h1>SME Dashboard</h1>
+<div class="container page-shell">
+    <div class="page-header">
+        <h1>SME Dashboard</h1>
+        <p>
+            Welcome back, {{ user.first_name|default:user.username }}.
+            Review your intro requests and discover campaigns relevant to your business needs.
+        </p>
+    </div>
 
-<h2>My Intro Requests</h2>
-{% for intro_request in my_intro_requests %}
-    <div class="card">
-        <h3>{{ intro_request.campaign.title }}</h3>
-        <p><strong>Status:</strong> {{ intro_request.status }}</p>
-        <p><strong>Founder:</strong> {{ intro_request.campaign.founder.get_full_name|default:intro_request.campaign.founder.username }}</p>
-    </div>
-{% empty %}
-    <div class="card">
-        <p>You have not requested any intros yet.</p>
-    </div>
-{% endfor %}
+    <div class="dashboard-subgrid">
+        <div class="section-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <div>
+                        <h2 class="h5 mb-1">My Intro Requests</h2>
+                        <p class="text-muted mb-0">Track the status of your requests to founders</p>
+                    </div>
+                </div>
 
-<h2>Recommended Campaigns</h2>
-{% for campaign in recommended_campaigns %}
-    <div class="card">
-        <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>
-        <p>{{ campaign.solution_summary|truncatechars:140 }}</p>
-        <a class="btn" href="{% url 'campaign_detail' campaign.id %}">View Campaign</a>
+                <div class="content-stack">
+                    {% for intro_request in my_intro_requests %}
+                        <div class="list-item-card">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                                <div>
+                                    <h3 class="h6 mb-1">{{ intro_request.campaign.title }}</h3>
+                                    <p class="text-muted mb-2">
+                                        {{ intro_request.campaign.solution_summary|truncatechars:110 }}
+                                    </p>
+                                    <div class="list-meta">
+                                        Founder:
+                                        <strong>
+                                            {{ intro_request.campaign.founder.get_full_name|default:intro_request.campaign.founder.username }}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="text-md-end">
+                                    <span class="status-badge status-{{ intro_request.status }}">
+                                        {{ intro_request.status }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="empty-state">
+                            You have not requested any intros yet.
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <div>
+                        <h2 class="h5 mb-1">Recommended Campaigns</h2>
+                        <p class="text-muted mb-0">Live campaigns you may want to explore</p>
+                    </div>
+                    <a class="btn btn-outline-primary btn-sm" href="{% url 'campaign_list' %}">
+                        Browse all
+                    </a>
+                </div>
+
+                <div class="content-stack">
+                    {% for campaign in recommended_campaigns %}
+                        <div class="list-item-card">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                                <div>
+                                    <h3 class="h6 mb-1">
+                                        <a class="text-decoration-none" href="{% url 'campaign_detail' campaign.id %}">
+                                            {{ campaign.title }}
+                                        </a>
+                                    </h3>
+                                    <p class="text-muted mb-2">
+                                        {{ campaign.solution_summary|truncatechars:110 }}
+                                    </p>
+                                    <div class="list-meta">
+                                        {{ campaign.target_industry }} · {{ campaign.target_role }}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <a class="btn btn-sm btn-outline-primary" href="{% url 'campaign_detail' campaign.id %}">
+                                        View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="empty-state">
+                            No recommendations available yet.
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
-{% empty %}
-    <div class="card">
-        <p>No recommendations yet.</p>
-    </div>
-{% endfor %}
+</div>
 {% endblock %}
 
 

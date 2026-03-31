@@ -3,45 +3,93 @@
 {% block title %}Founder Dashboard{% endblock %}
 
 {% block content %}
-<h1>Founder Dashboard</h1>
+<div class="container py-2">
+    <div class="dashboard-header">
+        <div class="dashboard-title">
+            <h1 class="fw-bold">Founder Dashboard</h1>
+            <p>
+                Welcome back, {{ user.first_name|default:user.username }}.
+                Here’s a quick view of your campaigns and validation activity.
+            </p>
+        </div>
 
-<div class="grid grid-2">
-    <div class="card">
-        <h3>Total Campaigns</h3>
-        <p>{{ total_campaigns }}</p>
+        <div class="dashboard-actions">
+            <a class="btn btn-primary-action" href="{% url 'founder_campaign_create' %}">
+                + Create Campaign
+            </a>
+
+            <a class="btn btn-outline-action" href="{% url 'founder_campaign_list' %}">
+                My Campaigns
+            </a>
+
+            <a class="btn btn-outline-action" href="{% url 'founder_intro_request_list' %}">
+                Intro Requests
+            </a>
+        </div>
     </div>
-    <div class="card">
-        <h3>Live Campaigns</h3>
-        <p>{{ live_campaigns }}</p>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Campaigns</div>
+            <div class="stat-value">{{ total_campaigns }}</div>
+            <div class="stat-meta">All campaigns you have created</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">Live Campaigns</div>
+            <div class="stat-value">{{ live_campaigns }}</div>
+            <div class="stat-meta">Currently visible to SMEs</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">Pending Review</div>
+            <div class="stat-value">{{ pending_campaigns }}</div>
+            <div class="stat-meta">Waiting for admin approval</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">Intro Requests</div>
+            <div class="stat-value">{{ total_intro_requests }}</div>
+            <div class="stat-meta">Signals from potential early adopters</div>
+        </div>
     </div>
-    <div class="card">
-        <h3>Pending Review</h3>
-        <p>{{ pending_campaigns }}</p>
-    </div>
-    <div class="card">
-        <h3>Total Intro Requests</h3> 
-        <p>{{ total_intro_requests }}</p>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <div>
+                    <h2 class="h5 mb-1">Recent Campaigns</h2>
+                    <p class="text-muted mb-0">Latest activity from your validation pipeline</p>
+                </div>
+            </div>
+
+            {% for campaign in recent_campaigns %}
+                <div class="border rounded-4 p-3 mb-3">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                        <div>
+                            <h3 class="h6 mb-1">{{ campaign.title }}</h3>
+                            <p class="text-muted mb-2">{{ campaign.solution_summary|truncatechars:120 }}</p>
+                            <div class="small text-muted">
+                                Status: <strong>{{ campaign.status }}</strong> ·
+                                Intro requests: <strong>{{ campaign.intro_requests_count }}</strong>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a class="btn btn-sm btn-outline-primary" href="{% url 'founder_campaign_update' campaign.id %}">
+                                Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="alert alert-light border mb-0">
+                    No campaigns yet. Create your first campaign to start validating.
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
-
-<div class="card">
-    <a class="btn" href="{% url 'founder_campaign_create' %}">Create Campaign</a>
-    <a class="btn btn-secondary" href="{% url 'founder_campaign_list' %}">My Campaigns</a>
-    <a class="btn btn-secondary" href="{% url 'founder_intro_request_list' %}">Intro Requests</a>
-</div>
-
-<h2>Recent Campaigns</h2>
-{% for campaign in recent_campaigns %}
-    <div class="card">
-        <h3>{{ campaign.title }}</h3>
-        <p><strong>Status:</strong> {{ campaign.status }}</p>
-        <p><strong>Intro requests:</strong> {{ campaign.intro_requests_count }}</p>
-    </div>
-{% empty %}
-    <div class="card">
-        <p>No campaigns yet.</p>
-    </div>
-{% endfor %}
 {% endblock %}
 
 
