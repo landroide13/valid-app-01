@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth.views import LogoutView
 from .views import (
     campaign_detail,
     campaign_list,
@@ -10,6 +11,9 @@ from .views import (
     founder_intro_request_list,
     founder_intro_request_update,
     home,
+    login_view,
+    profile_view,
+    signup_view,
     sme_dashboard,
     sme_request_intro,
 )
@@ -38,6 +42,12 @@ urlpatterns = [
 
     path("sme/dashboard/", sme_dashboard, name="sme_dashboard"),
     path("campaigns/<int:campaign_id>/request-intro/", sme_request_intro, name="sme_request_intro"),
+ 
+
+    path("signup/", signup_view, name="signup"),
+    path("login/", login_view, name="login"),
+    path("logout/", LogoutView.as_view(next_page="home"), name="logout"),
+    path("profile/", profile_view, name="profile"),
 ]
 
 

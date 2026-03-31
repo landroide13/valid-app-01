@@ -5,7 +5,10 @@ from django.db.models import Count
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import CampaignEngagementForm, CampaignForm
+from django.contrib.auth import login
+from django.contrib.auth.forms import AuthenticationForm
+
+from .forms import CampaignEngagementForm, CampaignForm, ProfileForm, SignUpForm
 from .models import (
     Campaign,
     CampaignEngagement,
@@ -13,8 +16,6 @@ from .models import (
     IntroRequest,
     IntroRequestStatus,
 )
-
-
 
 def is_founder(user):
     return (
@@ -64,7 +65,7 @@ def campaign_list(request):
     if market:
         campaigns = campaigns.filter(target_market__icontains=market)
 
-    return render(
+    return render( 
         request,
         "campaign/campaign_list.html",
         {"campaigns": campaigns},
@@ -336,6 +337,82 @@ def sme_request_intro(request, campaign_id):
     messages.success(request, "Intro request sent successfully.")
     return redirect("sme_dashboard")
 
+
+def signup_view(request):
+    if request.user.is_authenticated:
+        if is_founder(request.user):
+            return redirect("founder_dashboard")
+        elif is_sme(request.user):
+            return redirect("sme_dashboard")
+        return redirect("home")
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+
+            messages.success(request, "Your account has been created successfully.")
+
+            if user.profile.role == "founder":
+                return redirect("founder_dashboard")
+            return redirect("sme_dashboard")
+    else:
+        form = SignUpForm()
+
+    return render(request, "campaign/auth/signup.html", {"form": form})
+
+
+def login_view(request):
+    if request.user.is_authenticated:
+        if is_founder(request.user):
+            return redirect("founder_dashboard")
+        elif is_sme(request.user):
+            return redirect("sme_dashboard")
+        return redirect("home")
+
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, "Welcome back.")
+
+            if hasattr(user, "profile") and user.profile.role == "founder":
+                return redirect("founder_dashboard")
+            elif hasattr(user, "profile") and user.profile.role == "sme":
+                return redirect("sme_dashboard")
+            return redirect("home")
+    else:
+        form = AuthenticationForm()
+
+    return render(request, "campaign/auth/login.html", {"form": form})
+
+
+@login_required
+def profile_view(request):
+    profile = request.user.profile
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully.")
+
+            if profile.role == "founder":
+                return redirect("founder_dashboard")
+            return redirect("sme_dashboard")
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(
+        request,
+        "campaign/auth/profile.html",
+        {
+            "form": form,
+            "profile": profile,
+        },
+    )
 
 
 

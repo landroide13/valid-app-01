@@ -23,7 +23,7 @@
     <br>
     <button class="btn" type="submit">Filter</button>
 </form>
-
+ 
 {% for campaign in campaigns %}
     <div class="card">
         <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>

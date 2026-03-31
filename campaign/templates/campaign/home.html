@@ -1,27 +1,182 @@
 {% extends "campaign/base.html" %}
 
-{% block title %}Valid - Home{% endblock %}
+{% block title %}Valid - Validate your B2B SaaS{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h1>Validate your B2B SaaS with real SMEs</h1>
-    <p>Valid helps founders launch structured validation campaigns and connect with relevant SME operators.</p>
-    <a class="btn" href="{% url 'campaign_list' %}">Browse Live Campaigns</a>
-</div>
 
-<h2>Featured Campaigns</h2>
-{% for campaign in campaigns %}
-    <div class="card">
-        <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>
-        <p>{{ campaign.solution_summary|truncatechars:150 }}</p>
-        <p><strong>Industry:</strong> {{ campaign.target_industry }}</p>
-        <p><strong>Target role:</strong> {{ campaign.target_role }}</p>
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">Validate your B2B SaaS with real SMEs</h1>
+                <p class="lead mt-3">
+                    Launch validation campaigns, attract early adopters, and collect real market signals before spending months building.
+                </p>
+                <div class="mt-4 d-flex gap-3 flex-wrap">
+                    <a href="{% url 'campaign_list' %}" class="btn btn-light btn-lg">Browse Campaigns</a>
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'signup' %}" class="btn btn-outline-light btn-lg">Get Started</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner rounded-4 shadow">
+                        <div class="carousel-item active">
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1400&auto=format&fit=crop" class="d-block w-100" alt="Founders collaborating">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1400&auto=format&fit=crop" class="d-block w-100" alt="Business team meeting">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop" class="d-block w-100" alt="Startup discussion">
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-{% empty %}
-    <div class="card">
-        <p>No live campaigns yet.</p>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">How Valid works</h2>
+            <p class="text-muted">A lightweight validation workflow for founders and SME early adopters.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card p-4">
+                    <h4>1. Founders create campaigns</h4>
+                    <p class="mb-0">
+                        Describe the problem, target industry, and validation goal to launch a focused campaign.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card p-4">
+                    <h4>2. SMEs request intros</h4>
+                    <p class="mb-0">
+                        SME operators browse relevant campaigns and opt in when they want to explore a solution.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card p-4">
+                    <h4>3. Real validation happens</h4>
+                    <p class="mb-0">
+                        Founders receive structured intro requests and track calls, pilots, and outcomes.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-{% endfor %}
+</section>
+
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Core features</h2>
+            <p class="text-muted">Built for early-stage validation, not vanity metrics.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card feature-card p-4 text-center">
+                    <h5>Campaign Creation</h5>
+                    <p class="mb-0">Founders create structured validation campaigns with clear goals.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card feature-card p-4 text-center">
+                    <h5>Curated Intro Requests</h5>
+                    <p class="mb-0">SMEs express interest directly in relevant campaigns.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card feature-card p-4 text-center">
+                    <h5>Engagement Tracking</h5>
+                    <p class="mb-0">Track discovery calls, pilot discussions, and validation outcomes.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card feature-card p-4 text-center">
+                    <h5>Founder & SME Dashboards</h5>
+                    <p class="mb-0">Simple dashboards to manage progress on both sides.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-0">Featured live campaigns</h2>
+                <p class="text-muted mb-0">Explore active validation campaigns from founders.</p>
+            </div>
+            <a href="{% url 'campaign_list' %}" class="btn btn-primary">See all campaigns</a>
+        </div>
+
+        <div class="row g-4">
+            {% for campaign in campaigns %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card campaign-card h-100 p-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ campaign.title }}</h5>
+                            <p class="card-text text-muted">{{ campaign.solution_summary|truncatechars:120 }}</p>
+                            <p class="mb-1"><strong>Industry:</strong> {{ campaign.target_industry }}</p>
+                            <p class="mb-1"><strong>Role:</strong> {{ campaign.target_role }}</p>
+                            <p class="mb-3"><strong>Goal:</strong> {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})</p>
+                            <a href="{% url 'campaign_detail' campaign.id %}" class="btn btn-outline-primary">View Campaign</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-light border">
+                        No live campaigns yet.
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <h2 class="fw-bold">For founders</h2>
+                <p>
+                    Stop building in isolation. Launch a validation campaign and get interest from operators who actually face the problem.
+                </p>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'signup' %}" class="btn btn-primary">Join as Founder</a>
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold">For SMEs</h2>
+                <p>
+                    Discover promising early-stage tools, request introductions, and influence product direction before it reaches the broader market.
+                </p>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'signup' %}" class="btn btn-outline-primary">Join as SME</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
 
 
