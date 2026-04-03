@@ -3,23 +3,160 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>{{ page_title }}</h1>
+<div class="container page-shell">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <div class="page-header">
+                <h1>{{ page_title }}</h1>
+                <p>
+                    Create a clear validation campaign so SMEs can quickly understand the problem,
+                    the proposed solution, and the opportunity to engage.
+                </p>
+            </div>
 
-    <form method="post" class="card">
-        {% csrf_token %}
+            <form method="post" class="section-card campaign-form-card">
+                <div class="card-body p-4 p-lg-5">
+                    {% csrf_token %}
 
-        {% for field in form %}
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-                <div style="color: red;">{{ field.errors }}</div>
-            {% endif %}
-        {% endfor %}
+                    <div class="form-section">
+                        <h2 class="form-section-title">Campaign basics</h2>
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label for="{{ form.title.id_for_label }}" class="form-label">
+                                    Campaign title
+                                </label>
+                                {{ form.title }}
+                                {% for error in form.title.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-        <br>
-        <button class="btn" type="submit">Save Campaign</button>
-    </form>
+                            <div class="col-12">
+                                <label for="{{ form.problem_summary.id_for_label }}" class="form-label">
+                                    Problem summary
+                                </label>
+                                {{ form.problem_summary }}
+                                <div class="form-help-text">
+                                    Describe the pain point this campaign is trying to validate.
+                                </div>
+                                {% for error in form.problem_summary.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="{{ form.solution_summary.id_for_label }}" class="form-label">
+                                    Solution summary
+                                </label>
+                                {{ form.solution_summary }}
+                                <div class="form-help-text">
+                                    Explain your proposed solution in a clear, SME-friendly way.
+                                </div>
+                                {% for error in form.solution_summary.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Target customer</h2>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="{{ form.target_industry.id_for_label }}" class="form-label">
+                                    Target industry
+                                </label>
+                                {{ form.target_industry }}
+                                {% for error in form.target_industry.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.target_role.id_for_label }}" class="form-label">
+                                    Target role
+                                </label>
+                                {{ form.target_role }}
+                                {% for error in form.target_role.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.target_company_size.id_for_label }}" class="form-label">
+                                    Target company size
+                                </label>
+                                {{ form.target_company_size }}
+                                {% for error in form.target_company_size.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.target_market.id_for_label }}" class="form-label">
+                                    Target market
+                                </label>
+                                {{ form.target_market }}
+                                <div class="form-help-text">
+                                    Example: France, Germany, Europe, Remote-first SMEs
+                                </div>
+                                {% for error in form.target_market.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Validation setup</h2>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="{{ form.validation_goal_type.id_for_label }}" class="form-label">
+                                    Validation goal type
+                                </label>
+                                {{ form.validation_goal_type }}
+                                {% for error in form.validation_goal_type.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.validation_goal_count.id_for_label }}" class="form-label">
+                                    Validation goal count
+                                </label>
+                                {{ form.validation_goal_count }}
+                                {% for error in form.validation_goal_count.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="{{ form.pilot_offer_summary.id_for_label }}" class="form-label">
+                                    Early adopter / pilot offer
+                                </label>
+                                {{ form.pilot_offer_summary }}
+                                <div class="form-help-text">
+                                    Describe what SMEs get if they engage early.
+                                </div>
+                                {% for error in form.pilot_offer_summary.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-bar">
+                        <a href="{% url 'founder_campaign_list' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                            Cancel
+                        </a>
+                        <button class="btn btn-primary rounded-pill px-4" type="submit">
+                            Save Campaign
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

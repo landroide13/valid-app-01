@@ -18,7 +18,7 @@ from .views import (
     sme_request_intro,
 )
 
-
+ 
 urlpatterns = [
     path("", home, name="home"),
     path("campaigns/", campaign_list, name="campaign_list"),

@@ -26,13 +26,54 @@
     </form>
     
     {% for campaign in campaigns %}
-        <div class="card">
-            <h3><a href="{% url 'campaign_detail' campaign.id %}">{{ campaign.title }}</a></h3>
-            <p>{{ campaign.solution_summary|truncatechars:140 }}</p>
-            <p><strong>Industry:</strong> {{ campaign.target_industry }}</p>
-            <p><strong>Target role:</strong> {{ campaign.target_role }}</p>
-            <p><strong>Target market:</strong> {{ campaign.target_market }}</p>
-            <p><strong>Validation goal:</strong> {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})</p>
+        <div class="campaign-card">
+            <div class="campaign-card-top">
+                <span class="campaign-badge">Live Campaign</span>
+            </div>
+
+            <div class="campaign-card-body">
+                <h3 class="campaign-card-title">
+                    <a href="{% url 'campaign_detail' campaign.id %}">
+                        {{ campaign.title }}
+                    </a>
+                </h3>
+
+                <p class="campaign-card-summary">
+                    {{ campaign.solution_summary|truncatechars:140 }}
+                </p>
+
+                <div class="campaign-card-meta">
+                    <div class="campaign-meta-pill">
+                        <span class="campaign-meta-label">Industry</span>
+                        <span class="campaign-meta-value">{{ campaign.target_industry }}</span>
+                    </div>
+
+                    <div class="campaign-meta-pill">
+                        <span class="campaign-meta-label">Role</span>
+                        <span class="campaign-meta-value">{{ campaign.target_role }}</span>
+                    </div>
+
+                    <div class="campaign-meta-pill">
+                        <span class="campaign-meta-label">Market</span>
+                        <span class="campaign-meta-value">
+                            {{ campaign.target_market|default:"Not specified" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campaign-card-footer">
+                <div class="campaign-goal-block">
+                    <span class="campaign-goal-label">Validation goal</span>
+                    <span class="campaign-goal-value">
+                        {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})
+                    </span>
+                </div>
+
+                <a class="btn btn-sm btn-outline-primary rounded-pill px-3" href="{% url 'campaign_detail' campaign.id %}">
+                    View Details
+                </a>
+            </div>
         </div>
     {% empty %}
         <div class="card">
