@@ -134,9 +134,9 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ campaign.title }}</h5>
                             <p class="card-text text-muted">{{ campaign.solution_summary|truncatechars:120 }}</p>
-                            <p class="mb-1"><strong>Industry:</strong> {{ campaign.target_industry }}</p>
-                            <p class="mb-1"><strong>Role:</strong> {{ campaign.target_role }}</p>
-                            <p class="mb-3"><strong>Goal:</strong> {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})</p>
+                            <p class="mb-1"><strong>Industry:</strong> {{ campaign.get_target_industry_display }}</p>
+                            <p class="mb-1"><strong>Role:</strong> {{ campaign.get_target_role_display }}</p>
+                            <p class="mb-3"><strong>Goal:</strong> {{ campaign.get_validation_goal_type_display }} ({{ campaign.validation_goal_count }})</p>
                             <a href="{% url 'campaign_detail' campaign.id %}" class="btn btn-outline-primary">View Campaign</a>
                         </div>
                     </div>

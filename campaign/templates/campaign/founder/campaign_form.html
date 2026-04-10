@@ -14,7 +14,7 @@
                 </p>
             </div>
 
-            <form method="post" class="section-card campaign-form-card">
+            <form method="post" enctype="multipart/form-data" class="section-card campaign-form-card">
                 <div class="card-body p-4 p-lg-5">
                     {% csrf_token %}
 
@@ -98,7 +98,7 @@
                                 </label>
                                 {{ form.target_market }}
                                 <div class="form-help-text">
-                                    Example: France, Germany, Europe, Remote-first SMEs
+                                    Example: France, Germany, Europe
                                 </div>
                                 {% for error in form.target_market.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
@@ -112,7 +112,7 @@
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <label for="{{ form.validation_goal_type.id_for_label }}" class="form-label">
-                                    Validation goal type
+                                    Validation goal
                                 </label>
                                 {{ form.validation_goal_type }}
                                 {% for error in form.validation_goal_type.errors %}
@@ -122,7 +122,7 @@
 
                             <div class="col-md-6">
                                 <label for="{{ form.validation_goal_count.id_for_label }}" class="form-label">
-                                    Validation goal count
+                                    Target number
                                 </label>
                                 {{ form.validation_goal_count }}
                                 {% for error in form.validation_goal_count.errors %}
@@ -142,6 +142,37 @@
                                     <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Optional campaign visual</h2>
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label for="{{ form.campaign_image.id_for_label }}" class="form-label">
+                                    Campaign visual
+                                </label>
+                                {{ form.campaign_image }}
+                                <div class="form-help-text">
+                                    Upload one optional mockup, wireframe, or screenshot to help SMEs understand your product faster.
+                                </div>
+                                {% for error in form.campaign_image.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            {% if campaign and campaign.campaign_image %}
+                                <div class="col-12">
+                                    <div class="campaign-image-preview-wrap">
+                                        <p class="mb-2 fw-semibold">Current visual</p>
+                                        <img
+                                            src="{{ campaign.campaign_image.url }}"
+                                            alt="{{ campaign.title }}"
+                                            class="campaign-image-preview"
+                                        >
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 

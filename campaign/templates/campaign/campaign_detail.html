@@ -23,15 +23,15 @@
                     <div class="campaign-meta-grid mt-4">
                         <div class="campaign-meta-item">
                             <span class="meta-label">Target industry</span>
-                            <span class="meta-value">{{ campaign.target_industry }}</span>
+                            <span class="meta-value">{{ campaign.get_target_industry_display }}</span>
                         </div>
                         <div class="campaign-meta-item">
                             <span class="meta-label">Target role</span>
-                            <span class="meta-value">{{ campaign.target_role }}</span>
+                            <span class="meta-value">{{ campaign.get_target_role_display }}</span>
                         </div>
                         <div class="campaign-meta-item">
                             <span class="meta-label">Company size</span>
-                            <span class="meta-value">{{ campaign.target_company_size }}</span>
+                            <span class="meta-value">{{ campaign.get_target_company_size_display }}</span>
                         </div>
                         <div class="campaign-meta-item">
                             <span class="meta-label">Target market</span>
@@ -42,6 +42,21 @@
                     </div>
                 </div>
             </div>
+
+            {% if campaign.campaign_image %}
+                <div class="section-card mb-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <h2 class="h4 fw-bold mb-3">Campaign visual</h2>
+                        <div class="campaign-detail-image-wrap">
+                            <img
+                                src="{{ campaign.campaign_image.url }}"
+                                alt="{{ campaign.title }}"
+                                class="campaign-detail-image"
+                            >
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
 
             <div class="section-card mb-4">
                 <div class="card-body p-4 p-lg-5">
@@ -86,7 +101,7 @@
                     <div class="snapshot-block mb-3">
                         <div class="snapshot-label">Validation goal</div>
                         <div class="snapshot-value">
-                            {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})
+                            {{ campaign.get_validation_goal_type_display }} ({{ campaign.validation_goal_count }})
                         </div>
                     </div>
 
@@ -148,9 +163,9 @@
                 <div class="card-body p-4">
                     <h2 class="h6 fw-bold mb-3">Who this is for</h2>
                     <ul class="list-unstyled detail-check-list mb-0">
-                        <li>Operators in <strong>{{ campaign.target_industry }}</strong></li>
-                        <li>Decision-makers or practitioners in <strong>{{ campaign.target_role }}</strong></li>
-                        <li>Businesses sized <strong>{{ campaign.target_company_size }}</strong></li>
+                        <li>Operators in <strong>{{ campaign.get_target_industry_display }}</strong></li>
+                        <li>Decision-makers or practitioners in <strong>{{ campaign.get_target_role_display }}</strong></li>
+                        <li>Businesses sized <strong>{{ campaign.get_target_company_size_display }}</strong></li>
                         {% if campaign.target_market %}
                             <li>Located in or serving <strong>{{ campaign.target_market }}</strong></li>
                         {% endif %}

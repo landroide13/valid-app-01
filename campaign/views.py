@@ -11,8 +11,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import CampaignEngagementForm, CampaignForm, ProfileForm, SignUpForm
 from .models import (
     Campaign,
-    CampaignEngagement,
+    CampaignCompanySize,
+    CampaignIndustry,
     CampaignStatus,
+    CampaignTargetRole,
+    CampaignValidationGoal,
     IntroRequest,
     IntroRequestStatus,
 )
@@ -56,19 +59,31 @@ def campaign_list(request):
 
     industry = request.GET.get("industry")
     role = request.GET.get("role")
+    company_size = request.GET.get("company_size")
+    goal_type = request.GET.get("goal_type")
     market = request.GET.get("market")
 
     if industry:
-        campaigns = campaigns.filter(target_industry__icontains=industry)
+        campaigns = campaigns.filter(target_industry=industry)
     if role:
-        campaigns = campaigns.filter(target_role__icontains=role)
+        campaigns = campaigns.filter(target_role=role)
+    if company_size:
+        campaigns = campaigns.filter(target_company_size=company_size)
+    if goal_type:
+        campaigns = campaigns.filter(validation_goal_type=goal_type)
     if market:
         campaigns = campaigns.filter(target_market__icontains=market)
 
     return render( 
         request,
         "campaign/campaign_list.html",
-        {"campaigns": campaigns},
+        {   
+            "campaigns": campaigns,
+            "industry_choices": CampaignIndustry.choices,
+            "role_choices": CampaignTargetRole.choices,
+            "company_size_choices": CampaignCompanySize.choices,
+            "goal_type_choices": CampaignValidationGoal.choices,
+        },
     )
 
 
@@ -141,7 +156,7 @@ def founder_campaign_create(request):
         return HttpResponseForbidden("Only founders can access this page.")
 
     if request.method == "POST":
-        form = CampaignForm(request.POST)
+        form = CampaignForm(request.POST, request.FILES)
         if form.is_valid():
             campaign = form.save(commit=False)
             campaign.founder = request.user
@@ -170,7 +185,7 @@ def founder_campaign_update(request, campaign_id):
     campaign = get_object_or_404(Campaign, id=campaign_id, founder=request.user)
 
     if request.method == "POST":
-        form = CampaignForm(request.POST, instance=campaign)
+        form = CampaignForm(request.POST, request.FILES, instance=campaign)
         if form.is_valid():
             updated_campaign = form.save(commit=False)
             if updated_campaign.status in [

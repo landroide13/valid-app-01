@@ -135,32 +135,38 @@ class CampaignForm(forms.ModelForm):
             "validation_goal_type",
             "validation_goal_count",
             "pilot_offer_summary",
+            "campaign_image",
         ]
         widgets = {
             "problem_summary": forms.Textarea(attrs={"rows": 5}),
             "solution_summary": forms.Textarea(attrs={"rows": 5}),
             "pilot_offer_summary": forms.Textarea(attrs={"rows": 4}),
         }
+        labels = {
+            "validation_goal_type": "Validation goal",
+            "validation_goal_count": "Target number",
+            "pilot_offer_summary": "Early adopter / pilot offer",
+            "campaign_image": "Campaign visual",
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         for field_name, field in self.fields.items():
-            if isinstance(field.widget, forms.Textarea):
+            if isinstance(field.widget, forms.Select):
+                field.widget.attrs["class"] = "form-select"
+            elif isinstance(field.widget, forms.ClearableFileInput):
                 field.widget.attrs["class"] = "form-control"
+                field.widget.attrs["accept"] = "image/*"
             else:
                 field.widget.attrs["class"] = "form-control"
 
         self.fields["title"].widget.attrs["placeholder"] = "Example: Route planning for regional transport SMEs"
-        self.fields["problem_summary"].widget.attrs["placeholder"] = "What operational problem are you trying to solve?"
-        self.fields["solution_summary"].widget.attrs["placeholder"] = "Explain your solution clearly and simply."
-        self.fields["target_industry"].widget.attrs["placeholder"] = "Example: Logistics"
-        self.fields["target_role"].widget.attrs["placeholder"] = "Example: Operations Manager"
-        self.fields["target_company_size"].widget.attrs["placeholder"] = "Example: 10–50 employees"
-        self.fields["target_market"].widget.attrs["placeholder"] = "Example: France"
-        self.fields["validation_goal_type"].widget.attrs["placeholder"] = "Example: Pilot discussions"
+        self.fields["problem_summary"].widget.attrs["placeholder"] = "Describe the operational problem you are validating."
+        self.fields["solution_summary"].widget.attrs["placeholder"] = "Explain your proposed solution clearly."
+        self.fields["target_market"].widget.attrs["placeholder"] = "Example: France, Germany, Europe"
         self.fields["validation_goal_count"].widget.attrs["placeholder"] = "Example: 5"
-        self.fields["pilot_offer_summary"].widget.attrs["placeholder"] = "What do early adopters receive?"    
+        self.fields["pilot_offer_summary"].widget.attrs["placeholder"] = "Describe what early adopters receive."    
 
 
 class CampaignEngagementForm(forms.ModelForm):

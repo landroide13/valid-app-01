@@ -4,25 +4,70 @@
 
 {% block content %}
 <div class="container">
-    <h1>Live Campaigns</h1>
+    <h1>Live Campaigns</h1> 
 
-    <form method="get" class="card">
-        <div class="grid grid-2">
-            <div>
-                <label for="industry">Industry</label>
-                <input id="industry" type="text" name="industry" value="{{ request.GET.industry }}">
+    <form method="get" class="section-card mb-4">
+        <div class="card-body">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label for="industry" class="form-label">Industry</label>
+                    <select id="industry" name="industry" class="form-select">
+                        <option value="">All industries</option>
+                        {% for value, label in industry_choices %}
+                            <option value="{{ value }}" {% if request.GET.industry == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="role" class="form-label">Role</label>
+                    <select id="role" name="role" class="form-select">
+                        <option value="">All roles</option>
+                        {% for value, label in role_choices %}
+                            <option value="{{ value }}" {% if request.GET.role == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="company_size" class="form-label">Company size</label>
+                    <select id="company_size" name="company_size" class="form-select">
+                        <option value="">Any size</option>
+                        {% for value, label in company_size_choices %}
+                            <option value="{{ value }}" {% if request.GET.company_size == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="goal_type" class="form-label">Goal</label>
+                    <select id="goal_type" name="goal_type" class="form-select">
+                        <option value="">Any goal</option>
+                        {% for value, label in goal_type_choices %}
+                            <option value="{{ value }}" {% if request.GET.goal_type == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="market" class="form-label">Market</label>
+                    <input id="market" type="text" name="market" class="form-control" value="{{ request.GET.market }}">
+                </div>
             </div>
-            <div>
-                <label for="role">Role</label>
-                <input id="role" type="text" name="role" value="{{ request.GET.role }}">
-            </div>
-            <div>
-                <label for="market">Market</label>
-                <input id="market" type="text" name="market" value="{{ request.GET.market }}">
+
+            <div class="mt-3 d-flex gap-2 flex-wrap">
+                <button class="btn btn-primary rounded-pill px-4" type="submit">Filter Campaigns</button>
+                <a class="btn btn-outline-secondary rounded-pill px-4" href="{% url 'campaign_list' %}">Reset</a>
             </div>
         </div>
-        <br>
-        <button class="btn" type="submit">Filter</button>
     </form>
     
     {% for campaign in campaigns %}
@@ -45,12 +90,12 @@
                 <div class="campaign-card-meta">
                     <div class="campaign-meta-pill">
                         <span class="campaign-meta-label">Industry</span>
-                        <span class="campaign-meta-value">{{ campaign.target_industry }}</span>
+                        <span class="campaign-meta-value">{{ campaign.get_target_industry_display }}</span>
                     </div>
 
                     <div class="campaign-meta-pill">
                         <span class="campaign-meta-label">Role</span>
-                        <span class="campaign-meta-value">{{ campaign.target_role }}</span>
+                        <span class="campaign-meta-value">{{ campaign.get_target_role_display }}</span>
                     </div>
 
                     <div class="campaign-meta-pill">
@@ -66,7 +111,7 @@
                 <div class="campaign-goal-block">
                     <span class="campaign-goal-label">Validation goal</span>
                     <span class="campaign-goal-value">
-                        {{ campaign.validation_goal_type }} ({{ campaign.validation_goal_count }})
+                        {{ campaign.get_validation_goal_type_display }} ({{ campaign.validation_goal_count }})
                     </span>
                 </div>
 
