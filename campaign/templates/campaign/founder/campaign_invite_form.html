@@ -1,0 +1,82 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}Send Invite{% endblock %}
+
+{% block content %}
+<div class="container page-shell">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="page-header">
+                <h1>Send invite</h1>
+                <p>Invite a relevant contact to review your campaign: <strong>{{ campaign.title }}</strong>.</p>
+            </div>
+
+            <form method="post" class="section-card">
+                <div class="card-body p-4 p-lg-5">
+                    {% csrf_token %}
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.recipient_name.id_for_label }}">
+                                {{ form.recipient_name.label }}
+                            </label>
+                            {{ form.recipient_name }}
+                            {% for error in form.recipient_name.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.recipient_email.id_for_label }}">
+                                {{ form.recipient_email.label }}
+                            </label>
+                            {{ form.recipient_email }}
+                            {% for error in form.recipient_email.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label" for="{{ form.personal_message.id_for_label }}">
+                                {{ form.personal_message.label }}
+                            </label>
+                            {{ form.personal_message }}
+                            <div class="form-help-text">
+                                Keep it short and relevant. This message will be included in the invitation email.
+                            </div>
+                            {% for error in form.personal_message.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-actions-bar">
+                        <a href="{% url 'founder_campaign_invites' campaign.id %}" class="btn btn-outline-secondary rounded-pill px-4">
+                            Back
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">
+                            Send Invite
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

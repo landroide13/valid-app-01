@@ -1,0 +1,92 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}Campaign Invites{% endblock %}
+
+{% block content %}
+<div class="container page-shell">
+    <div class="page-header">
+        <h1>Invites for "{{ campaign.title }}"</h1>
+        <p>Share this campaign and manually invite relevant contacts.</p>
+    </div>
+
+    <div class="section-card mb-4">
+        <div class="card-body">
+            <h2 class="h5 mb-3">Share this campaign</h2>
+
+            <div class="mb-3">
+                <label class="form-label">Campaign link</label>
+                <input type="text" class="form-control" value="{{ share_url }}" readonly>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ linkedin_share_url }}" target="_blank" class="btn btn-outline-primary rounded-pill">LinkedIn</a>
+                <a href="{{ facebook_share_url }}" target="_blank" class="btn btn-outline-primary rounded-pill">Facebook</a>
+                <a href="{{ whatsapp_share_url }}" target="_blank" class="btn btn-outline-success rounded-pill">WhatsApp</a>
+                <a href="{{ email_share_url }}" class="btn btn-outline-secondary rounded-pill">Email</a>
+                <a href="{% url 'founder_campaign_invite' campaign.id %}" class="btn btn-primary rounded-pill">Send Manual Invite</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h2 class="h5 mb-1">Sent invites</h2>
+                    <p class="text-muted mb-0">Track outreach for this campaign</p>
+                </div>
+            </div>
+
+            <div class="content-stack">
+                {% for invite in invites %}
+                    <div class="list-item-card">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                            <div>
+                                <h3 class="h6 mb-1">
+                                    {{ invite.recipient_name|default:invite.recipient_email }}
+                                </h3>
+                                <p class="text-muted mb-2">{{ invite.recipient_email }}</p>
+                                <div class="list-meta">
+                                    Sent on {{ invite.sent_at|date:"M d, Y H:i" }}
+                                </div>
+                            </div>
+
+                            <div class="text-md-end">
+                                <span class="status-badge status-{{ invite.status|default:'requested' }}">
+                                    {{ invite.get_status_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        No invites sent yet.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

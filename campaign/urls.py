@@ -4,6 +4,8 @@ from .views import (
     campaign_detail,
     campaign_list,
     founder_campaign_create,
+    founder_campaign_invite,
+    founder_campaign_invites,
     founder_campaign_list,
     founder_campaign_update,
     founder_dashboard,
@@ -38,6 +40,17 @@ urlpatterns = [
         "founder/intro-requests/<int:intro_request_id>/engagement/",
         founder_engagement_update,
         name="founder_engagement_update",
+    ),
+
+    path(
+        "founder/campaigns/<int:campaign_id>/invites/",
+        founder_campaign_invites,
+        name="founder_campaign_invites",
+    ),
+    path(
+        "founder/campaigns/<int:campaign_id>/invites/send/",
+        founder_campaign_invite,
+        name="founder_campaign_invite",
     ),
 
     path("sme/dashboard/", sme_dashboard, name="sme_dashboard"),

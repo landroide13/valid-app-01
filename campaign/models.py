@@ -60,6 +60,12 @@ class CampaignValidationGoal(models.TextChoices):
     DEPOSITS = "deposits", "Deposits"
     WAITLIST_SIGNUPS = "waitlist_signups", "Waitlist Signups"
 
+class CampaignInviteStatus(models.TextChoices):
+    SENT = "sent", "Sent"
+    OPENED = "opened", "Opened"
+    SIGNED_UP = "signed_up", "Signed Up"
+    REQUESTED_INTRO = "requested_intro", "Requested Intro"
+    BOUNCED = "bounced", "Bounced"
 
 class Campaign(models.Model):
     founder = models.ForeignKey(
@@ -156,6 +162,36 @@ class CampaignEngagement(models.Model):
     def __str__(self):
         return f"Engagement for request {self.intro_request_id}"
 
+
+class CampaignInvite(models.Model):
+    campaign = models.ForeignKey(
+        Campaign,
+        on_delete=models.CASCADE,
+        related_name="invites",
+    )
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="sent_campaign_invites",
+    )
+    recipient_email = models.EmailField()
+    recipient_name = models.CharField(max_length=255, blank=True)
+    personal_message = models.TextField(blank=True)
+    invite_token = models.CharField(max_length=64, unique=True)
+    status = models.CharField(
+        max_length=30,
+        choices=CampaignInviteStatus.choices,
+        default=CampaignInviteStatus.SENT,
+    )
+    sent_at = models.DateTimeField(auto_now_add=True)
+    opened_at = models.DateTimeField(blank=True, null=True)
+    accepted_at = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["-sent_at"]
+
+    def __str__(self):
+        return f"{self.recipient_email} - {self.campaign.title}"
 
 
 

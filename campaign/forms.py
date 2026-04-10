@@ -1,6 +1,6 @@
 from django import forms
 from account.models import Profile, UserRole
-from .models import Campaign, CampaignEngagement
+from .models import Campaign, CampaignEngagement, CampaignInvite
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -183,7 +183,34 @@ class CampaignEngagementForm(forms.ModelForm):
         }
 
 
+class CampaignInviteForm(forms.ModelForm):
+    class Meta:
+        model = CampaignInvite
+        fields = [
+            "recipient_name",
+            "recipient_email",
+            "personal_message",
+        ]
+        widgets = {
+            "personal_message": forms.Textarea(attrs={"rows": 4}),
+        }
+        labels = {
+            "recipient_name": "Contact name",
+            "recipient_email": "Contact email",
+            "personal_message": "Personal message",
+        }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+
+        self.fields["recipient_name"].widget.attrs["placeholder"] = "Optional contact name"
+        self.fields["recipient_email"].widget.attrs["placeholder"] = "contact@company.com"
+        self.fields["personal_message"].widget.attrs["placeholder"] = (
+            "Optional short message to explain why you are inviting this person."
+        )
 
 
 

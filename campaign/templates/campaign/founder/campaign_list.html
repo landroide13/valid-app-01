@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                 <div>
-                    <h2 class="h5 mb-1">Campaign List</h2>
+                    <h2 class="h5 mb-1">Campaign List</h2> 
                     <p class="text-muted mb-0">All campaigns created under your account</p>
                 </div>
 
@@ -48,6 +48,11 @@
                                     Preview
                                 </a>
                             </div>
+
+                            <a class="btn btn-sm btn-outline-dark" href="{% url 'founder_campaign_invites' campaign.id %}">
+                                Invites
+                            </a>
+                            
                         </div>
                     </div>
                 {% empty %}

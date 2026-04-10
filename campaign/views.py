@@ -4,6 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+import secrets
+
+from django.conf import settings
+from django.core.mail import send_mail
+from django.urls import reverse
+from .forms import CampaignInviteForm
 
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
@@ -13,6 +19,8 @@ from .models import (
     Campaign,
     CampaignCompanySize,
     CampaignIndustry,
+    CampaignInvite,
+    CampaignInviteStatus,
     CampaignStatus,
     CampaignTargetRole,
     CampaignValidationGoal,
@@ -108,6 +116,19 @@ def campaign_detail(request, campaign_id):
         "can_request_intro": can_request_intro,
         "existing_intro_request": existing_intro_request,
     }
+
+    invite_token = request.GET.get("invite")
+    if invite_token:
+        invite = CampaignInvite.objects.filter(
+            invite_token=invite_token,
+            campaign=campaign
+        ).first()
+        if invite and invite.status == CampaignInviteStatus.SENT:
+            invite.status = CampaignInviteStatus.OPENED
+            from django.utils import timezone
+            invite.opened_at = timezone.now()
+            invite.save(update_fields=["status", "opened_at"])
+
     return render(request, "campaign/campaign_detail.html", context)
 
 
@@ -429,9 +450,97 @@ def profile_view(request):
         },
     )
 
+@login_required
+def founder_campaign_invite(request, campaign_id):
+    if not is_founder(request.user):
+        return HttpResponseForbidden("Only founders can access this page.")
 
+    campaign = get_object_or_404(Campaign, id=campaign_id, founder=request.user)
 
+    if request.method == "POST":
+        form = CampaignInviteForm(request.POST)
+        if form.is_valid():
+            invite = form.save(commit=False)
+            invite.campaign = campaign
+            invite.sender = request.user
+            invite.invite_token = secrets.token_urlsafe(24)
+            invite.status = CampaignInviteStatus.SENT
+            invite.save()
 
+            campaign_url = request.build_absolute_uri(
+                reverse("campaign_detail", args=[campaign.id])
+            )
+            invite_url = f"{campaign_url}?invite={invite.invite_token}"
+
+            recipient_name = invite.recipient_name or "there"
+            sender_name = request.user.get_full_name() or request.user.username
+
+            subject = f"{sender_name} invited you to review a campaign on Valid"
+            message = (
+                f"Hi {recipient_name},\n\n"
+                f"{sender_name} invited you to review this validation campaign:\n\n"
+                f"{campaign.title}\n"
+                f"{invite_url}\n\n"
+                f"Message from {sender_name}:\n"
+                f"{invite.personal_message or 'No personal message provided.'}\n\n"
+                f"Best,\nValid"
+            )
+
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=getattr(settings, "DEFAULT_FROM_EMAIL", None),
+                recipient_list=[invite.recipient_email],
+                fail_silently=False,
+            )
+
+            messages.success(request, "Invitation sent successfully.")
+            return redirect("founder_campaign_invites", campaign_id=campaign.id)
+    else:
+        form = CampaignInviteForm()
+
+    return render(
+        request,
+        "campaign/founder/campaign_invite_form.html",
+        {
+            "campaign": campaign,
+            "form": form,
+        },
+    )
+
+@login_required
+def founder_campaign_invites(request, campaign_id):
+    if not is_founder(request.user):
+        return HttpResponseForbidden("Only founders can access this page.")
+
+    campaign = get_object_or_404(Campaign, id=campaign_id, founder=request.user)
+    invites = campaign.invites.all()
+
+    share_url = request.build_absolute_uri(
+        reverse("campaign_detail", args=[campaign.id])
+    )
+
+    linkedin_share_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
+    facebook_share_url = f"https://www.facebook.com/sharer/sharer.php?u={share_url}"
+    whatsapp_share_url = f"https://wa.me/?text={share_url}"
+    email_share_url = (
+        f"mailto:?subject=Check out this validation campaign on Valid"
+        f"&body=I thought this campaign might interest you: {share_url}"
+    )
+
+    return render(
+        request,
+        "campaign/founder/campaign_invites.html",
+        {
+            "campaign": campaign,
+            "invites": invites,
+            "share_url": share_url,
+            "linkedin_share_url": linkedin_share_url,
+            "facebook_share_url": facebook_share_url,
+            "whatsapp_share_url": whatsapp_share_url,
+            "email_share_url": email_share_url,
+        },
+    )
 
 
 
