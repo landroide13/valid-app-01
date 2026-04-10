@@ -3,28 +3,166 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-<div class="container py-5" style="max-width: 760px;">
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-4">
-            <h1 class="h3 mb-4">Create your account</h1>
+<div class="container auth-shell">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <span class="auth-eyebrow">Create account</span>
+            <h1>Join Valid</h1>
+            <p>
+                Create your account to launch validation campaigns as a founder
+                or discover relevant early-stage solutions as an SME.
+            </p>
+        </div>
 
+        <div class="auth-card-body">
             <form method="post">
                 {% csrf_token %}
 
-                {% for field in form %}
-                    <div class="mb-3">
-                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        {{ field }}
-                        {% if field.help_text %}
-                            <div class="form-text">{{ field.help_text|safe }}</div>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
+                <div class="auth-form-section">
+                    <h2 class="auth-section-title">Account details</h2>
 
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                            {{ form.username }}
+                            {% for error in form.username.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {% for error in form.email.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                            {{ form.first_name }}
+                            {% for error in form.first_name.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                            {{ form.last_name }}
+                            {% for error in form.last_name.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                            {{ form.password1 }}
+                            {% if form.password1.help_text %}
+                                <div class="auth-help password-help">{{ form.password1.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in form.password1.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                            {{ form.password2 }}
+                            {% if form.password2.help_text %}
+                                <div class="auth-help">{{ form.password2.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in form.password2.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-form-section">
+                    <h2 class="auth-section-title">Role and profile</h2>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.role.id_for_label }}">{{ form.role.label }}</label>
+                            {{ form.role }}
+                            <div class="auth-help">
+                                Choose how you want to use Valid.
+                            </div>
+                            {% for error in form.role.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="role-hint-box h-100">
+                                <strong>Founder</strong>: create campaigns and validate SaaS ideas.<br>
+                                <strong>SME</strong>: explore campaigns and request intros to founders.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.company_name.id_for_label }}">{{ form.company_name.label }}</label>
+                            {{ form.company_name }}
+                            {% for error in form.company_name.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ form.job_title.id_for_label }}">{{ form.job_title.label }}</label>
+                            {{ form.job_title }}
+                            {% for error in form.job_title.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label" for="{{ form.industry.id_for_label }}">{{ form.industry.label }}</label>
+                            {{ form.industry }}
+                            {% for error in form.industry.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label" for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
+                            {{ form.country }}
+                            {% for error in form.country.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label" for="{{ form.company_size.id_for_label }}">{{ form.company_size.label }}</label>
+                            {{ form.company_size }}
+                            {% for error in form.company_size.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label" for="{{ form.pain_points.id_for_label }}">{{ form.pain_points.label }}</label>
+                            {{ form.pain_points }}
+                            <div class="auth-help">
+                                Optional. Founders can describe their target problem area, and SMEs can mention their current operational pain points.
+                            </div>
+                            {% for error in form.pain_points.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-footer">
+                    <div class="auth-footer-text">
+                        Already have an account?
+                        <a href="{% url 'login' %}" class="text-decoration-none">Login</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">
+                        Create Account
+                    </button>
+                </div>
             </form>
         </div>
     </div>

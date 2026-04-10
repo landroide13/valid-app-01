@@ -1,8 +1,6 @@
 from django import forms
-
 from account.models import Profile, UserRole
 from .models import Campaign, CampaignEngagement
-
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -44,6 +42,28 @@ class SignUpForm(UserCreationForm):
             "job_title",
             "pain_points",
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if field_name == "role":
+                field.widget.attrs["class"] = "form-select"
+            else:
+                field.widget.attrs["class"] = "form-control"
+
+        self.fields["username"].widget.attrs["placeholder"] = "Choose a username"
+        self.fields["first_name"].widget.attrs["placeholder"] = "Your first name"
+        self.fields["last_name"].widget.attrs["placeholder"] = "Your last name"
+        self.fields["email"].widget.attrs["placeholder"] = "you@company.com"
+        self.fields["password1"].widget.attrs["placeholder"] = "Create a password"
+        self.fields["password2"].widget.attrs["placeholder"] = "Repeat your password"
+        self.fields["company_name"].widget.attrs["placeholder"] = "Company or project name"
+        self.fields["industry"].widget.attrs["placeholder"] = "Example: Logistics"
+        self.fields["country"].widget.attrs["placeholder"] = "Example: France"
+        self.fields["company_size"].widget.attrs["placeholder"] = "Example: 10–50"
+        self.fields["job_title"].widget.attrs["placeholder"] = "Example: Founder or Operations Manager"
+        self.fields["pain_points"].widget.attrs["placeholder"] = "Optional: describe your pain points or validation interests"
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -95,6 +115,11 @@ class ProfileForm(forms.ModelForm):
             "pain_points": forms.Textarea(attrs={"rows": 4}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+
 
 class CampaignForm(forms.ModelForm):
     class Meta:
@@ -116,6 +141,26 @@ class CampaignForm(forms.ModelForm):
             "solution_summary": forms.Textarea(attrs={"rows": 5}),
             "pilot_offer_summary": forms.Textarea(attrs={"rows": 4}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if isinstance(field.widget, forms.Textarea):
+                field.widget.attrs["class"] = "form-control"
+            else:
+                field.widget.attrs["class"] = "form-control"
+
+        self.fields["title"].widget.attrs["placeholder"] = "Example: Route planning for regional transport SMEs"
+        self.fields["problem_summary"].widget.attrs["placeholder"] = "What operational problem are you trying to solve?"
+        self.fields["solution_summary"].widget.attrs["placeholder"] = "Explain your solution clearly and simply."
+        self.fields["target_industry"].widget.attrs["placeholder"] = "Example: Logistics"
+        self.fields["target_role"].widget.attrs["placeholder"] = "Example: Operations Manager"
+        self.fields["target_company_size"].widget.attrs["placeholder"] = "Example: 10–50 employees"
+        self.fields["target_market"].widget.attrs["placeholder"] = "Example: France"
+        self.fields["validation_goal_type"].widget.attrs["placeholder"] = "Example: Pilot discussions"
+        self.fields["validation_goal_count"].widget.attrs["placeholder"] = "Example: 5"
+        self.fields["pilot_offer_summary"].widget.attrs["placeholder"] = "What do early adopters receive?"    
 
 
 class CampaignEngagementForm(forms.ModelForm):
