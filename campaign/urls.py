@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
 from .views import (
+    about,
     campaign_detail,
     campaign_list,
     founder_campaign_create,
@@ -25,6 +26,7 @@ urlpatterns = [
     path("", home, name="home"),
     path("campaigns/", campaign_list, name="campaign_list"),
     path("campaigns/<int:campaign_id>/", campaign_detail, name="campaign_detail"),
+    path("about/", about, name="about"),
 
     path("founder/dashboard/", founder_dashboard, name="founder_dashboard"),
     path("founder/campaigns/", founder_campaign_list, name="founder_campaign_list"),

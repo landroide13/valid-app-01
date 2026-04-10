@@ -825,6 +825,20 @@ textarea.form-control {
     display: block;
 }
 
+/******** About page***********/
+
+.role-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    background: #f8fafc;
+    height: 100%;
+}
+
+.role-box h5 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
 
 
 

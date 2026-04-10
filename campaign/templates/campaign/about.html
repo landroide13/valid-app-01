@@ -1,0 +1,192 @@
+{% extends "campaign/base.html" %}
+
+{% block title %}About Valid{% endblock %}
+
+{% block content %}
+<div class="container page-shell">
+
+    <!-- HERO -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">About Valid</h1>
+        <p class="lead text-muted">
+            A platform designed to help founders validate B2B SaaS ideas with real SMEs — before building too much, too early.
+        </p>
+    </div>
+
+    <!-- PURPOSE -->
+    <div class="section-card mb-4">
+        <div class="card-body p-4 p-lg-5">
+            <h2 class="h4 fw-bold mb-3">Why Valid exists</h2>
+            <p>
+                Too many SaaS products are built without real validation. Founders spend months building features
+                before speaking to actual users, leading to wasted time, resources, and failed products.
+            </p>
+            <p>
+                Valid exists to bridge that gap — connecting founders with real SME operators early,
+                so validation happens before heavy development.
+            </p>
+        </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="section-card mb-4">
+        <div class="card-body p-4 p-lg-5">
+            <h2 class="h4 fw-bold mb-4">How it works</h2>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5>1. Founders create campaigns</h5>
+                    <p class="text-muted">
+                        Founders describe a problem, a proposed solution, and a validation goal.
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <h5>2. SMEs discover campaigns</h5>
+                    <p class="text-muted">
+                        SME operators browse relevant campaigns based on their industry and role.
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <h5>3. Real validation happens</h5>
+                    <p class="text-muted">
+                        SMEs request intros, and founders track conversations, pilots, and outcomes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WHO IT'S FOR -->
+    <div class="section-card mb-4">
+        <div class="card-body p-4 p-lg-5">
+            <h2 class="h4 fw-bold mb-4">Who is Valid for?</h2>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="role-box">
+                        <h5>Founders</h5>
+                        <p>
+                            Early-stage SaaS builders who want to validate ideas with real users before scaling development.
+                        </p>
+                        <ul>
+                            <li>Create validation campaigns</li>
+                            <li>Define target SME profiles</li>
+                            <li>Track real-world interest and feedback</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="role-box">
+                        <h5>SMEs (Small and Medium-sized Enterprises)</h5>
+                        <p>
+                            Operators, managers, and decision-makers looking for tools that solve real business problems.
+                        </p>
+                        <ul>
+                            <li>Discover early-stage solutions</li>
+                            <li>Request introductions to founders</li>
+                            <li>Influence product direction early</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GLOSSARY -->
+    <div class="section-card mb-4">
+        <div class="card-body p-4 p-lg-5">
+            <h2 class="h4 fw-bold mb-4">Key terms</h2>
+
+            <div class="content-stack">
+
+                <div>
+                    <h6 class="fw-bold">Campaign</h6>
+                    <p class="text-muted">
+                        A structured validation page created by a founder describing a problem, solution, and target users.
+                    </p>
+                </div>
+
+                <div>
+                    <h6 class="fw-bold">Founder</h6>
+                    <p class="text-muted">
+                        A user who creates campaigns to validate SaaS ideas and connect with SMEs.
+                    </p>
+                </div>
+
+                <div>
+                    <h6 class="fw-bold">SME</h6>
+                    <p class="text-muted">
+                        A Small or Medium-sized Enterprise — typically the target customer for B2B SaaS solutions.
+                    </p>
+                </div>
+
+                <div>
+                    <h6 class="fw-bold">Intro Request</h6>
+                    <p class="text-muted">
+                        A signal from an SME expressing interest in a campaign and requesting contact with the founder.
+                    </p>
+                </div>
+
+                <div>
+                    <h6 class="fw-bold">Validation Goal</h6>
+                    <p class="text-muted">
+                        The measurable objective of a campaign (e.g., number of discovery calls, pilots, or signups).
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- DIFFERENTIATION -->
+    <div class="section-card mb-4">
+        <div class="card-body p-4 p-lg-5">
+            <h2 class="h4 fw-bold mb-3">What makes Valid different?</h2>
+
+            <ul>
+                <li>Focused on validation, not just exposure</li>
+                <li>Structured campaigns instead of generic listings</li>
+                <li>Direct signals of interest (intro requests)</li>
+                <li>Built for early-stage B2B SaaS, not mature products</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-5">
+        <h4 class="fw-bold">Start validating today</h4>
+        <p class="text-muted">Join Valid and connect with real users before you build too much.</p>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'signup' %}" class="btn btn-primary rounded-pill px-4">
+                Get Started
+            </a>
+            <a href="{% url 'campaign_list' %}" class="btn btn-outline-primary rounded-pill px-4">
+                Explore Campaigns
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

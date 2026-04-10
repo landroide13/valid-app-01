@@ -57,6 +57,8 @@ def home(request):
         {"campaigns": campaigns},
     )
 
+def about(request):
+    return render(request, "campaign/about.html")
 
 def campaign_list(request):
     campaigns = (
